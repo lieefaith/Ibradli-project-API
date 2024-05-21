@@ -1,4 +1,4 @@
-const { users } = require("../models");
+const { User } = require("../models");
 const generateToken = require("../config/generateToken");
 const { comparePassword, hashPassword } = require("../config/bcrypt");
 const {
@@ -6,33 +6,34 @@ const {
   successResponse,
   internalErrorResponse,
   notFoundResponse,
-} = require("../config/responseJson");
+} = require("../config/response");
+const { users } = require("../models");
 
 async function register(req, res) {
   try {
-    const { name, email, password } = req.body;
+    const { username, email, password } = req.body;
     // Check if user already exists
-    const existingEmail = await users.findOne({ where: { email } });
-    if (existingEmail) {
-      errorResponse(res, "Email already exists", 400);
+    const existingUser = await users.findOne({ where: { email } });
+    if (existingUser) {
+      errorResponse(res, "User already exists", 400);
     }
 
     // Hash the password
     const hashedPassword = await hashPassword(password);
 
     // Create new user
-    const user = await users.create({
-      name,
+    const newUser = await users.create({
+      username,
       email,
       password: hashedPassword,
     });
 
     const userResponse = {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
+      id: newUser.id,
+      username: newUser.username,
+      email: newUser.email,
+      createdAt: newUser.createdAt,
+      updatedAt: newUser.updatedAt,
     };
 
     successResponse(res, "User registered successfully", userResponse, 201);
@@ -59,7 +60,7 @@ async function login(req, res) {
 
     const userResponse = {
       id: user.id,
-      name: user.name,
+      username: user.username,
       email: user.email,
     };
 
@@ -82,7 +83,7 @@ async function login(req, res) {
 async function me(req, res) {
   try {
     const user = await users.findByPk(req.user.id, {
-      attributes: ["id", "name", "email"],
+      attributes: ["id", "username", "email"],
     });
     if (!user) {
       errorResponse(res, "User not found", 404);
