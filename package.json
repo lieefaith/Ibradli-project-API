@@ -8,5 +8,24 @@
     "nodemon": "^3.1.0",
     "sequelize": "^6.37.3",
     "sequelize-cli": "^6.6.2"
-  }
+  },
+  "name": "ibradli-project-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "dev": "nodemon ./bin/www"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lieefaith/Ibradli-project-API.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lieefaith/Ibradli-project-API/issues"
+  },
+  "homepage": "https://github.com/lieefaith/Ibradli-project-API#readme",
+  "description": ""
 }
