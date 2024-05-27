@@ -1,4 +1,4 @@
-const { User } = require("../models");
+
 const generateToken = require("../config/generateToken");
 const { comparePassword, hashPassword } = require("../config/bcrypt");
 const {
@@ -6,38 +6,33 @@ const {
   successResponse,
   internalErrorResponse,
   notFoundResponse,
-} = require("../config/response");
-const { users } = require("../models");
+} = require("../config/responseJson");
+const users = require("../models/users");
 
 async function register(req, res) {
   try {
-    const { username, email, password } = req.body;
+    const { name, email, password } = req.body;
     // Check if user already exists
-    const existingUser = await users.findOne({ where: { email } });
-    if (existingUser) {
-      errorResponse(res, "User already exists", 400);
+    const existingEmail = await users.findOne({ where: { email }, attributes: ['name'] });
+    if (existingEmail) {
+      errorResponse(res, "Email already exists", 400);
     }
 
     // Hash the password
     const hashedPassword = await hashPassword(password);
 
     // Create new user
-    const newUser = await users.create({
-      username,
+    await users.create({
+      name,
       email,
       password: hashedPassword,
     });
 
-    const userResponse = {
-      id: newUser.id,
-      username: newUser.username,
-      email: newUser.email,
-      createdAt: newUser.createdAt,
-      updatedAt: newUser.updatedAt,
-    };
+  
 
-    successResponse(res, "User registered successfully", userResponse, 201);
+    successResponse(res, { msg: "User registered successfully" });
   } catch (error) {
+    console.log(error)
     internalErrorResponse(res, error);
   }
 }
@@ -60,7 +55,7 @@ async function login(req, res) {
 
     const userResponse = {
       id: user.id,
-      username: user.username,
+      name: user.name,
       email: user.email,
     };
 
@@ -83,7 +78,7 @@ async function login(req, res) {
 async function me(req, res) {
   try {
     const user = await users.findByPk(req.user.id, {
-      attributes: ["id", "username", "email"],
+      attributes: ["id", "name", "email"],
     });
     if (!user) {
       errorResponse(res, "User not found", 404);

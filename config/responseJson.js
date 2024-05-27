@@ -7,9 +7,7 @@ const errorResponse = (res, message, statusCode = 500) => {
 };
 
 const validationErrorResponse = (res, errors) => {
-  return res
-    .status(400)
-    .json({ success: false, errors, message: "Validation errors" });
+  return res.status(400).json({ success: false, errors, message: "Validation errors" });
 };
 
 const notFoundResponse = (res, message) => {
