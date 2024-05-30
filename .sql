@@ -7,23 +7,18 @@ create table users(
     updatedAt timestamp default current_timestamp on update current_timestamp
 );
 
-create table acara(
-    name varchar(100) primary key
+CREATE TABLE `acara` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `nama_acara` VARCHAR(255) NOT NULL,
+  `tanggal_acara` DATETIME NOT NULL
 );
 
-create table kehadiranAcara(
-    name_acara varchar(100),
-    user_id integer,
-    foreign key(name_acara) references acara(name),
-    foreign key(user_id) references users(id)
-);
-
-CREATE TABLE acara (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  participant_name VARCHAR(255) NOT NULL,
-  event_id INT NOT NULL,
-  attendance_date DATETIME NOT NULL,
-  createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (event_id) REFERENCES events(id) ON UPDATE CASCADE ON DELETE CASCADE
+CREATE TABLE `kehadiranacara` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `nama_peserta` VARCHAR(255) NOT NULL,
+  `event_id` INT NOT NULL,
+  `tanggal_kehadiran` DATETIME NOT NULL,
+  `createdAt` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (`event_id`) REFERENCES `acara`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
 );

@@ -17,7 +17,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "events",
+          model: "acara", // Ensure this matches your 'acara' table
           key: "id",
         },
         onUpdate: "CASCADE",
