@@ -1,24 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const {
-  createEvent,
-  getEvents,
-  updateEvent,
-  deleteEvent,
-  showEventById,
-  recordAttendance,
-  getAttendanceReport,
-  countAttendees,
-} = require("../controllers/attendanceController");
+const attendanceController = require("../controllers/attendanceController");
 
-router.get("/events", getEvents);
-router.post("/events", createEvent);
-router.put("/events/:id", updateEvent);
-router.get("/events/:id", showEventById);
-router.delete("/events/:id", deleteEvent);
-
-router.post("/attendance", recordAttendance);
-router.get("/attendance/report", getAttendanceReport);
-router.get("/attendance/count/:event_id", countAttendees);
+// Routes for attendance feature
+router.post("/attendance", attendanceController.recordAttendance); // Catat kehadiran peserta di acara
+router.get("/attendance/:event_id/count", attendanceController.countAttendees); // Hitung jumlah peserta yang hadir
+router.get(
+  "/attendance/:event_id/report",
+  attendanceController.getAttendanceReport
+); // Hasilkan laporan kehadiran acara
 
 module.exports = router;

@@ -1,13 +1,13 @@
 "use strict";
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("attendance", {
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable("attendances", {
       id: {
+        type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
       },
       participant_name: {
         type: Sequelize.STRING,
@@ -17,7 +17,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "acara", // Ensure this matches your 'acara' table
+          model: "events",
           key: "id",
         },
         onUpdate: "CASCADE",
@@ -41,7 +41,7 @@ module.exports = {
     });
   },
 
-  down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("attendance");
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable("attendances");
   },
 };

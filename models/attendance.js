@@ -1,38 +1,54 @@
-// models/attendance.js
-module.exports = (sequelize, DataTypes) => {
-  const Attendance = sequelize.define("Attendance", {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    participant_name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    event_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "Event",
-        key: "id",
+const { DataTypes } = require("sequelize");
+const sequelize = require("../db/config");
+  const Attendance = sequelize.define(
+    "attendance",
+    {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER,
       },
-      onUpdate: "CASCADE",
+      participant_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      event_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "events",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      attendance_date: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+        onUpdate: DataTypes.NOW,
+      },
+    },
+    {
+      tableName: "attendance",
+      freezeTableName: true
+    }
+  );
+
+  Attendance.associate = (models) => {
+    Attendance.belongsTo(models.events, {
+      foreignKey: "event_id",
       onDelete: "CASCADE",
-    },
-    attendance_date: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    createdAt: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-      onUpdate: DataTypes.NOW,
-    },
-  });
-  return Attendance;
+      onUpdate: "CASCADE",
+    });
 };
+  
+module.exports = Attendance
