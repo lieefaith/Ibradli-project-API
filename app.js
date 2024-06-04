@@ -9,6 +9,7 @@ const cors = require("cors");
 // const usersRouter = require("./routes/users");
 const authRouter = require("./routes/users");
 const attendaceRouter = require('./routes/attendance')
+const eventRouter = require("./routes/event")
 require("dotenv").config();
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/auth", authRouter);
 app.use(express.static(path.join(__dirname, "public")));
 app.use('/', attendaceRouter)
+app.use('/api', eventRouter)
 
 // app.use("/", indexRouter);
 // app.use("/api", usersRouter);

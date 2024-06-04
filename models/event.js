@@ -1,38 +1,34 @@
-// models/acara.js
-module.exports = (sequelize, DataTypes) => {
-  const Event = sequelize.define(
-    "Event",
-    {
-      id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-      },
-      eventName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      eventDate: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
-      createdAt: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-      },
-      updatedAt: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-      },
+const { DataTypes } = require("sequelize");
+const sequelize = require("../db/config");
+const Event = sequelize.define(
+  "Event",
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
     },
-    {
-      tableName: "Event",
-    }
-  );
+    eventName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    eventDate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      onUpdate: DataTypes.NOW,
+    },
+  },
+  {
+    tableName: "acara",
+  }
+);
 
-  Event.associate = function (models) {
-    Event.hasMany(models.Attendance, { foreignKey: "Event_id" });
-  };
-
-  return Event;
-};
+module.exports = Event
